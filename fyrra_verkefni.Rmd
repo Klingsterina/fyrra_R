@@ -62,6 +62,14 @@ eh <- eh %>%
 ### f)
 
 ### g)
+```{r}
+eh <- eh %>%
+  count(Country, sort = TRUE)
+
+top_10_countries <- head(eh, 10)
+
+top_10_countries
+```
 
 ### h)
 
