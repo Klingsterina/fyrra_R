@@ -110,7 +110,7 @@ top_10_countries
 ```
 
 
-### h)
+### h) Veljið forritara frá þremur löndum til að vinna áfram með. Það þurfa að vera a.m.k. 300 svör frá þeim löndum sem þið vinnið með. Yfirskrifið gagnaramman í e) lið með svörum frá þessum þremur löndum. Þið eigið að nota þennan gagnaramma það sem eftir er verkefnisins.
 ```{r}
 countries_over_300 <- country_counts %>% filter(n >= 300)
 
@@ -120,11 +120,9 @@ selected_countries <- c("United States of America", "Germany", "France")
 eh <- eh %>% filter(Country %in% selected_countries)
 ```
 
-### h) Veljið forritara frá þremur löndum til að vinna áfram með. Það þurfa að vera a.m.k. 300 svör frá þeim löndum sem þið vinnið með. Yfirskrifið gagnaramman í e) lið með svörum frá þessum þremur löndum. Þið eigið að nota þennan gagnaramma það sem eftir er verkefnisins.
-
 ### i) Kannið hvort að þær breytur sem þið munið nota í verkefninu séu rétt skráðar (talnabreytur eða flokkabreytur). Breytið þeim flokkabreytum sem þið ætlið að nota í factor breytur ef þær eru skráðar sem chr (þið gætuð þurft að koma aftur að þessum lið síðar í verkefninu þegar þið eruð búin að ákveða hvaða breytur þið ætlið að vinna með). 
 
-### j)
+### j) Endurskýrið flokkana í EdLevel breytunni þannig að nöfnin verði styttri og á íslensku. Endurskýrið einnig nöfnin á löndunum þannig að þau verði á íslensku.
 ```{r}
 eh$Country <- dplyr::case_when(
   eh$Country == "United States of America" ~ "Bandaríkin",
@@ -134,8 +132,6 @@ eh$Country <- dplyr::case_when(
 )
 table(eh$Country)
 ```
-### j) Endurskýrið flokkana í EdLevel breytunni þannig að nöfnin verði styttri og á íslensku. Endurskýrið einnig nöfnin á löndunum þannig að þau verði á íslensku.
-
 
 ## HLUTI 2
 ### k) Notið viðeigandi myndrit sem sýnir árslaun svarenda í dollurum (USD). Lýsið í örfáum orðum því sem þið sjáið á myndinni. Hér gæti verið góð hugmynd að fjarlægja einhver svör. Rökstyðjið af hverju þið ákváðuð að gera það og teiknið sams konar mynd aftur (eftir að þið fjarlægið).
