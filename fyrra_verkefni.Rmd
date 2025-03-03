@@ -16,13 +16,20 @@ library(dplyr)
 ```
 
 ## HLUTI 1
+### a)
 ```{r}
 eh <- read_csv("Fyrra_Gogn/survey_results_public_rev.csv")
+```
 
+### b)
+```{r}
 eh <- eh %>%
   filter(MainBranch == "I am a developer by profession",
          Employment == "Employed, full-time")
+```
 
+### c)
+```{r}
 nrow(eh)  # Telur fjölda lína eftir síun
 table(eh$MainBranch)  # Sýnir tíðnidreifingu í MainBranch
 table(eh$Employment)  # Sýnir tíðnidreifingu í Employment
@@ -37,3 +44,12 @@ summary(eh$years_before_pro)
 eh %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_before_pro
 ```
 
+### d)
+
+
+## HLUTI 2
+### k)
+
+
+## HLUTI 3
+### p)
