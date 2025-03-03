@@ -1,5 +1,5 @@
 ---
-author: Eygló Ástþórsdóttir
+author: Eygló Ástþórsdóttir og Helga Björg Helgadóttir
 date: 19. feb 2025
 title: "fyrra_verkefni"
 output: html_document
@@ -17,23 +17,23 @@ library(dplyr)
 
 ## HLUTI 1
 ```{r}
-e <- read_csv("Fyrra_Gogn/survey_results_public_rev.csv")
+eh <- read_csv("Fyrra_Gogn/survey_results_public_rev.csv")
 
-e <- e %>%
+eh <- eh %>%
   filter(MainBranch == "I am a developer by profession",
          Employment == "Employed, full-time")
 
-nrow(e)  # Telur fjölda lína eftir síun
-table(e$MainBranch)  # Sýnir tíðnidreifingu í MainBranch
-table(e$Employment)  # Sýnir tíðnidreifingu í Employment
+nrow(eh)  # Telur fjölda lína eftir síun
+table(eh$MainBranch)  # Sýnir tíðnidreifingu í MainBranch
+table(eh$Employment)  # Sýnir tíðnidreifingu í Employment
 
-e <- e %>%
+eh <- eh %>%
   mutate(YearsCode = as.numeric(YearsCode),
          YearsCodePro = as.numeric(YearsCodePro),
          years_before_pro = YearsCode - YearsCodePro)
 
-summary(e$years_before_pro)
+summary(eh$years_before_pro)
 
-e %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_before_pro
+eh %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_before_pro
 ```
 
