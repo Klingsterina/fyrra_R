@@ -2,7 +2,7 @@
 author: Eygló Ástþórsdóttir og Helga Björg Helgadóttir
 date: 19. feb 2025
 title: "fyrra_verkefni"
-output: html_document
+output: rmdformats::readthedown
 ---
 
 ```{r setup, include=FALSE}
@@ -48,6 +48,9 @@ eh <- eh %>%
 ```
 
 ### e)
+```{r}
+summary(eh$CompTotal)
+```
 
 ### f)
 
