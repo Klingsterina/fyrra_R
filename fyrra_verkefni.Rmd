@@ -110,10 +110,27 @@ top_10_countries
 ```
 
 ### h)
+```{r}
+countries_over_300 <- country_counts %>% filter(n >= 300)
+
+selected_countries <- c("United States of America", "Germany", "France")
+
+# Yfirskrifa gagnaramman með svörum frá þessum löndum
+eh <- eh %>% filter(Country %in% selected_countries)
+```
 
 ### i)
 
 ### j)
+```{r}
+eh$Country <- dplyr::case_when(
+  eh$Country == "United States of America" ~ "Bandaríkin",
+  eh$Country == "Germany" ~ "Þýskaland",
+  eh$Country == "France" ~ "Frakkland",
+  TRUE ~ eh$Country
+)
+table(eh$Country)
+```
 
 
 ## HLUTI 2
