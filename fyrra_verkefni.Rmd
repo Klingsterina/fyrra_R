@@ -131,12 +131,26 @@ selected_countries <- c("United States of America", "Germany", "France")
 eh <- eh %>% filter(Country %in% selected_countries)
 ```
 
-### i) 
-**Kannið hvort að þær breytur sem þið munið nota í verkefninu séu rétt skráðar (talnabreytur eða flokkabreytur). Breytið þeim flokkabreytum sem þið ætlið að nota í factor breytur ef þær eru skráðar sem chr (þið gætuð þurft að koma aftur að þessum lið síðar í verkefninu þegar þið eruð búin að ákveða hvaða breytur þið ætlið að vinna með).** 
+### i) Kannið hvort að þær breytur sem þið munið nota í verkefninu séu rétt skráðar (talnabreytur eða flokkabreytur). Breytið þeim flokkabreytum sem þið ætlið að nota í factor breytur ef þær eru skráðar sem chr (þið gætuð þurft að koma aftur að þessum lið síðar í verkefninu þegar þið eruð búin að ákveða hvaða breytur þið ætlið að vinna með).
+```{r}
+# yo momma
+```
 
 ### j) 
 **Endurskýrið flokkana í EdLevel breytunni þannig að nöfnin verði styttri og á íslensku. Endurskýrið einnig nöfnin á löndunum þannig að þau verði á íslensku.**
 ```{r}
+eh$EdLevel <- recode(eh$EdLevel,
+  "Primary/elementary school" = "Grunnskóli",
+  "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)" = "Framhaldsskóli",
+  "Some college/university study without earning a degree" = "Hóf nám án gráðu",
+  "Associate degree (A.A., A.S., etc.)" = "Diplóma",
+  "Bachelor’s degree (B.A., B.S., B.Eng., etc.)" = "Bakkalár",
+  "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)" = "Meistara gráða",
+  "Professional degree (JD, MD, Ph.D, Ed.D, etc.)" = "Doktorspróf",
+  "Something else" = "Annað"
+)
+table(eh$EdLevel)
+
 eh$Country <- recode(eh$Country,
                      "United States of America" = "Bandaríkin",
                      "Germany" = "Þýskaland",
