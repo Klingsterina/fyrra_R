@@ -18,13 +18,13 @@ library(dplyr)
 ## HLUTI 1
 ### a)
 ```{r}
-eh <- read_csv("Fyrra_Gogn/survey_results_public_rev.csv")
+eh <- read_csv("https://ahj.hi.is/survey_results_public_rev.csv")
 ```
 
 ### b)
 ```{r}
 eh <- eh %>%
-  filter(MainBranch == "I am a developer by profession",
+  filter(MainBranch == "I am a developer by profession" &
          Employment == "Employed, full-time")
 ```
 
@@ -41,7 +41,11 @@ eh %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_be
 
 ```
 
-### d)
+### d
+```{r}
+eh <- eh %>%
+  filter(substr(Currency, 1, 3) %in% c("EUR", "USD"))
+```
 
 ### e)
 
