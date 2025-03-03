@@ -126,12 +126,10 @@ eh <- eh %>% filter(Country %in% selected_countries)
 
 ### j)
 ```{r}
-eh$Country <- dplyr::case_when(
-  eh$Country == "United States of America" ~ "Bandaríkin",
-  eh$Country == "Germany" ~ "Þýskaland",
-  eh$Country == "France" ~ "Frakkland",
-  TRUE ~ eh$Country
-)
+eh$Country <- recode(eh$Country,
+                     "United States of America" = "Bandaríkin",
+                     "Germany" = "Þýskaland",
+                     "France" = "Frakkland")
 table(eh$Country)
 ```
 ### j) Endurskýrið flokkana í EdLevel breytunni þannig að nöfnin verði styttri og á íslensku. Endurskýrið einnig nöfnin á löndunum þannig að þau verði á íslensku.
