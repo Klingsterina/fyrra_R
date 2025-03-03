@@ -53,25 +53,59 @@ summary(eh_fixedYears$YearsCodingBeforeDev)
 
 ### d
 ```{r}
-eh <- eh %>%
-  filter(substr(Currency, 1, 3) %in% c("EUR", "USD"))
+# Remove extra text in Currency column
+eh$Currency <- substr(eh$Currency, 1, 3)
+
+# Keep only salaries reported in EUR or USD
+eh <- eh %>% filter(Currency %in% c("EUR", "USD"))
+
 ```
 
 ### e)
 ```{r}
+# Ensure CompTotal is numeric
+eh$CompTotal <- as.numeric(eh$CompTotal)
+
+# Remove NAs
+eh <- eh %>% filter(!is.na(CompTotal))
+
+# Compute IQR to detect outliers
+Q1 <- quantile(eh$CompTotal, 0.25, na.rm = TRUE)
+Q3 <- quantile(eh$CompTotal, 0.75, na.rm = TRUE)
+IQR_value <- Q3 - Q1
+lower_bound <- Q1 - 1.5 * IQR_value
+upper_bound <- Q3 + 1.5 * IQR_value
+
+# Filter out outliers
+eh <- eh %>% filter(CompTotal >= lower_bound & CompTotal <= upper_bound)
+
+# Check new salary summary
 summary(eh$CompTotal)
+
 ```
 
 ### f)
+```{r}
+eh$CompTotalUSD <- ifelse(eh$Currency == "USD", eh$CompTotal,
+                          ifelse(eh$Currency == "EUR", eh$CompTotal * 1.08, NA))  
+
+summary(eh$CompTotalUSD)
+eh %>% select(Currency, CompTotal, CompTotalUSD) %>% head(10)
+
+```
 
 ### g)
 ```{r}
-eh <- eh %>%
+# Count number of responses per country
+country_counts <- eh %>%
   count(Country, sort = TRUE)
 
-top_10_countries <- head(eh, 10)
+# Get the top 10 countries
+top_10_countries <- head(country_counts, 10)
 
+# Display results
 top_10_countries
+
 ```
 
 ### h)
