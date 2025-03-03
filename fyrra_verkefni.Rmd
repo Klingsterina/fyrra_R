@@ -1,0 +1,39 @@
+---
+author: Eygló Ástþórsdóttir
+date: 19. feb 2025
+title: "fyrra_verkefni"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+```
+
+```{r}
+library(tidyverse)  # Fyrir gagnavinnslu
+library(readr)      # Fyrir gagnainnlestur
+library(dplyr)
+```
+
+## HLUTI 1
+```{r}
+e <- read_csv("Fyrra_Gogn/survey_results_public_rev.csv")
+
+e <- e %>%
+  filter(MainBranch == "I am a developer by profession",
+         Employment == "Employed, full-time")
+
+nrow(e)  # Telur fjölda lína eftir síun
+table(e$MainBranch)  # Sýnir tíðnidreifingu í MainBranch
+table(e$Employment)  # Sýnir tíðnidreifingu í Employment
+
+e <- e %>%
+  mutate(YearsCode = as.numeric(YearsCode),
+         YearsCodePro = as.numeric(YearsCodePro),
+         years_before_pro = YearsCode - YearsCodePro)
+
+summary(e$years_before_pro)
+
+e %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_before_pro
+```
+
