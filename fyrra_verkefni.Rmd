@@ -18,7 +18,7 @@ library(dplyr)
 ## HLUTI 1
 ### a)
 ```{r}
-eh <- read_csv("Fyrra_Gogn/survey_results_public_rev.csv")
+eh <- read_csv("https://ahj.hi.is/survey_results_public_rev.csv")
 ```
 
 ### b)
