@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
 library(tidyverse)  # Fyrir gagnavinnslu
 library(readr)      # Fyrir gagnainnlestur
 library(dplyr)
+library(ggplot2)
 ```
 
 ## HLUTI 1
@@ -51,7 +52,7 @@ summary(eh_fixedYears$YearsCodingBeforeDev)
 
 Þá fáum við mun raunsærri gildi.
 
-### d
+### d)
 ```{r}
 # Remove extra text in Currency column
 eh$Currency <- substr(eh$Currency, 1, 3)
@@ -117,6 +118,12 @@ top_10_countries
 
 ## HLUTI 2
 ### k)
+```{r}
+ggplot(eh, aes(x = CompTotalUSD)) + 
+  geom_histogram(bins = 30, fill="steelblue", color="black") +
+  labs(title = "Árslaun í dollurum (USD)", x = "Árslaun (USD)", y = "Fjöldi svarenda") +
+  theme_minimal()
+```
 
 ### l)
 
