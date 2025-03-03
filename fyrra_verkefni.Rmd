@@ -1,8 +1,11 @@
 ---
 author: Eygló Ástþórsdóttir og Helga Björg Helgadóttir
 date: 19. feb 2025
-title: "fyrra_verkefni"
-output: rmdformats::readthedown
+title: "Fyrra R verkefni"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -17,19 +20,22 @@ library(ggplot2)
 ```
 
 ## HLUTI 1
-### a) Lesið gagnasafnið inn í R/RStudio og geymið í hlut sem ber upphafsstafi þeirra sem verkefnið vinna (ef Gréta Halldórsdóttir og Sigurður Karl Jónsson eru að vinna saman skulu þau nefna hlutinn gs).
+### a) 
+**Lesið gagnasafnið inn í R/RStudio og geymið í hlut sem ber upphafsstafi þeirra sem verkefnið vinna (ef Gréta Halldórsdóttir og Sigurður Karl Jónsson eru að vinna saman skulu þau nefna hlutinn gs).**
 ```{r}
 eh <- read_csv("https://ahj.hi.is/survey_results_public_rev.csv")
 ```
 
-### b) Notið filter() skipunina til að velja svör frá starfandi forriturum (sjá MainBranch breytunna, "I am a developer by profession") í fullri vinnu (sjá Employment breytuna, "Employed, full-time"). Yfirskrifið stóra gagnaramman í a) lið.
+### b) 
+**Notið filter() skipunina til að velja svör frá starfandi forriturum (sjá MainBranch breytunna, "I am a developer by profession") í fullri vinnu (sjá Employment breytuna, "Employed, full-time"). Yfirskrifið stóra gagnaramman í a) lið.**
 ```{r}
 eh <- eh %>%
   filter(MainBranch == "I am a developer by profession" &
          Employment == "Employed, full-time")
 ```
 
-### c) Búið til nýja breytu í gagnarammanum ykkar sem inniheldur fjölda ára sem svarendur höfðu kóðað áður en þau fóru að vinna sem forritarar. Er eitthvað athugavert við gildin á þeirri breytu?
+### c) 
+**Búið til nýja breytu í gagnarammanum ykkar sem inniheldur fjölda ára sem svarendur höfðu kóðað áður en þau fóru að vinna sem forritarar. Er eitthvað athugavert við gildin á þeirri breytu?**
 ```{r}
 eh <- eh %>%
   mutate(YearsCodingBeforeDev = as.numeric(YearsCode) - as.numeric(YearsCodePro))
@@ -52,7 +58,8 @@ summary(eh_fixedYears$YearsCodingBeforeDev)
 
 Þá fáum við mun raunsærri gildi.
 
-### d) Veljið svör frá fólki sem gefur launin sín upp í Evrum eða Dollurum (USD). Notið aðeins svör frá þessum einstaklingum það sem eftir er verkefnisins (yfirskrifið ramman frá því í b) lið).
+### d) 
+**Veljið svör frá fólki sem gefur launin sín upp í Evrum eða Dollurum (USD). Notið aðeins svör frá þessum einstaklingum það sem eftir er verkefnisins (yfirskrifið ramman frá því í b) lið).**
 ```{r}
 # Remove extra text in Currency column
 eh$Currency <- substr(eh$Currency, 1, 3)
@@ -62,7 +69,8 @@ eh <- eh %>% filter(Currency %in% c("EUR", "USD"))
 
 ```
 
-### e) Skoðið CompTotal breytuna. Eru einhverjir augljósir útlagar í breytunni? Ef svo, hvert/hver eru gildin? Fjarlægið þessa auljósu útlaga. Yfirskrifið gamla rammann.
+### e) 
+**Skoðið CompTotal breytuna. Eru einhverjir augljósir útlagar í breytunni? Ef svo, hvert/hver eru gildin? Fjarlægið þessa auljósu útlaga. Yfirskrifið gamla rammann.**
 ```{r}
 # Ensure CompTotal is numeric
 eh$CompTotal <- as.numeric(eh$CompTotal)
@@ -85,7 +93,8 @@ summary(eh$CompTotal)
 
 ```
 
-### f) Búið til nýja breytu sem heitir CompTotalUSD þar sem öll laun eru í dollurum. Ábending: Hér gæti verið gott að nota ifelse() skipun.
+### f) 
+**Búið til nýja breytu sem heitir CompTotalUSD þar sem öll laun eru í dollurum. Ábending: Hér gæti verið gott að nota ifelse() skipun.**
 ```{r}
 eh$CompTotalUSD <- ifelse(eh$Currency == "USD", eh$CompTotal,
                           ifelse(eh$Currency == "EUR", eh$CompTotal * 1.08, NA))  
@@ -95,7 +104,8 @@ eh %>% select(Currency, CompTotal, CompTotalUSD) %>% head(10)
 
 ```
 
-### g) Sýnið fjölda svara frá hverju og einu landi frá þeim 10 löndum sem flest svörin koma frá.
+### g) 
+**Sýnið fjölda svara frá hverju og einu landi frá þeim 10 löndum sem flest svörin koma frá.**
 ```{r}
 # Count number of responses per country
 country_counts <- eh %>%
@@ -110,7 +120,8 @@ top_10_countries
 ```
 
 
-### h) Veljið forritara frá þremur löndum til að vinna áfram með. Það þurfa að vera a.m.k. 300 svör frá þeim löndum sem þið vinnið með. Yfirskrifið gagnaramman í e) lið með svörum frá þessum þremur löndum. Þið eigið að nota þennan gagnaramma það sem eftir er verkefnisins.
+### h) 
+**Veljið forritara frá þremur löndum til að vinna áfram með. Það þurfa að vera a.m.k. 300 svör frá þeim löndum sem þið vinnið með. Yfirskrifið gagnaramman í e) lið með svörum frá þessum þremur löndum. Þið eigið að nota þennan gagnaramma það sem eftir er verkefnisins.**
 ```{r}
 countries_over_300 <- country_counts %>% filter(n >= 300)
 
@@ -120,9 +131,11 @@ selected_countries <- c("United States of America", "Germany", "France")
 eh <- eh %>% filter(Country %in% selected_countries)
 ```
 
-### i) Kannið hvort að þær breytur sem þið munið nota í verkefninu séu rétt skráðar (talnabreytur eða flokkabreytur). Breytið þeim flokkabreytum sem þið ætlið að nota í factor breytur ef þær eru skráðar sem chr (þið gætuð þurft að koma aftur að þessum lið síðar í verkefninu þegar þið eruð búin að ákveða hvaða breytur þið ætlið að vinna með). 
+### i) 
+**Kannið hvort að þær breytur sem þið munið nota í verkefninu séu rétt skráðar (talnabreytur eða flokkabreytur). Breytið þeim flokkabreytum sem þið ætlið að nota í factor breytur ef þær eru skráðar sem chr (þið gætuð þurft að koma aftur að þessum lið síðar í verkefninu þegar þið eruð búin að ákveða hvaða breytur þið ætlið að vinna með).** 
 
-### j) Endurskýrið flokkana í EdLevel breytunni þannig að nöfnin verði styttri og á íslensku. Endurskýrið einnig nöfnin á löndunum þannig að þau verði á íslensku.
+### j) 
+**Endurskýrið flokkana í EdLevel breytunni þannig að nöfnin verði styttri og á íslensku. Endurskýrið einnig nöfnin á löndunum þannig að þau verði á íslensku.**
 ```{r}
 eh$Country <- recode(eh$Country,
                      "United States of America" = "Bandaríkin",
@@ -132,7 +145,8 @@ table(eh$Country)
 ```
 
 ## HLUTI 2
-### k) Notið viðeigandi myndrit sem sýnir árslaun svarenda í dollurum (USD). Lýsið í örfáum orðum því sem þið sjáið á myndinni. Hér gæti verið góð hugmynd að fjarlægja einhver svör. Rökstyðjið af hverju þið ákváðuð að gera það og teiknið sams konar mynd aftur (eftir að þið fjarlægið).
+### k) 
+**Notið viðeigandi myndrit sem sýnir árslaun svarenda í dollurum (USD). Lýsið í örfáum orðum því sem þið sjáið á myndinni. Hér gæti verið góð hugmynd að fjarlægja einhver svör. Rökstyðjið af hverju þið ákváðuð að gera það og teiknið sams konar mynd aftur (eftir að þið fjarlægið).**
 ```{r}
 ggplot(eh, aes(x = CompTotalUSD)) + 
   geom_histogram(bins = 30, fill="steelblue", color="black") +
@@ -140,22 +154,31 @@ ggplot(eh, aes(x = CompTotalUSD)) +
   theme_minimal()
 ```
 
-### l) Notið viðeigandi myndrit sem sýnir árslaun þátttakenda í USD eftir löndunum þremur. Lýsið í örfáum orðum því sem þið sjáið á myndinni.
+### l) 
+**Notið viðeigandi myndrit sem sýnir árslaun þátttakenda í USD eftir löndunum þremur. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 er að testa
 
-### m) Nú skuluð þið aftur notað viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().
+### m) 
+**Nú skuluð þið aftur notað viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().**
 
-### n) Veljið ykkur tvær talnabreytur sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.
+### n) 
+**Veljið ykkur tvær talnabreytur sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 
-### o) Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.
+### o) 
+**Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 
 
 ## HLUTI 3
-### p) Búið til töflu sem sýnir fjölda svarenda eftir löndum og menntun.
+### p) 
+**Búið til töflu sem sýnir fjölda svarenda eftir löndum og menntun.**
 
-### q) Búið til töflu sem sýnir hlutfall svarenda á hverju menntunarstigi fyrir sig eftir löndum. Það á t.d. að vera hægt að lesa hveru hátt hlutfall svarenda er með BS gráðu í hverju landi fyrir sig osfrv. 
+### q) 
+**Búið til töflu sem sýnir hlutfall svarenda á hverju menntunarstigi fyrir sig eftir löndum. Það á t.d. að vera hægt að lesa hveru hátt hlutfall svarenda er með BS gráðu í hverju landi fyrir sig osfrv.**
 
-### r) Búið til töflu sem sýnir meðalárslaun, miðgildi árslauna og staðalfrávik árslauna eftir menntun og löndum. Í tölflunni á einnig að koma fram hvað eru margar mælingar í hverjum flokki.
+### r) 
+**Búið til töflu sem sýnir meðalárslaun, miðgildi árslauna og staðalfrávik árslauna eftir menntun og löndum. Í tölflunni á einnig að koma fram hvað eru margar mælingar í hverjum flokki.**
 
 
-### Notkun á gervigreind. Lýsið í nokkrum orðum hvort og ef já, hvernig, þið notuðuð gervigreind við lausn á þessu verkefni. 
+### Notkun á gervigreind. Lýsið í nokkrum orðum hvort og ef já, hvernig, þið notuðuð gervigreind við lausn á þessu verkefni.
+
+Við notuðum gervigreind þegar við lentum í því að R kóðinn okkar virkaði ekki og við skildum ekki hvað olli því. Þá fengum við gervigreind til að bera kennsl á villuna og útskýra fyrir okkur hvernig betur mætti fara.
