@@ -46,10 +46,35 @@ eh %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_be
 
 ### d)
 
+### e)
+
+### f)
+
+### g)
+
+### h)
+
+### i)
+
+### j)
+
 
 ## HLUTI 2
 ### k)
 
+### l)
+
+### m)
+
+### n)
+
+### o)
+
 
 ## HLUTI 3
 ### p)
+
+### q)
+
+### r)
+
