@@ -126,6 +126,7 @@ ggplot(eh, aes(x = CompTotalUSD)) +
 ```
 
 ### l)
+er að testa
 
 ### m)
 
