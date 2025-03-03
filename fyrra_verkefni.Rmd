@@ -123,6 +123,19 @@ eh <- eh %>% filter(Country %in% selected_countries)
 ### i) Kannið hvort að þær breytur sem þið munið nota í verkefninu séu rétt skráðar (talnabreytur eða flokkabreytur). Breytið þeim flokkabreytum sem þið ætlið að nota í factor breytur ef þær eru skráðar sem chr (þið gætuð þurft að koma aftur að þessum lið síðar í verkefninu þegar þið eruð búin að ákveða hvaða breytur þið ætlið að vinna með).
 ```{r}
 # yo momma
+eh$YearsCode <- as.numeric(eh$YearsCode)
+eh$YearsCodePro <- as.numeric(eh$YearsCodePro)
+eh$CompTotal <- as.numeric(eh$CompTotal)
+eh$CompTotalUSD <- as.numeric(eh$CompTotalUSD)
+
+eh$Country <- as.factor(eh$Country)
+eh$EdLevel <- as.factor(eh$EdLevel)
+eh$Employment <- as.factor(eh$Employment)
+eh$RemoteWork <- as.factor(eh$RemoteWork)
+eh$OrgSize <- as.factor(eh$OrgSize)
+eh$DevType <- as.factor(eh$DevType)
+eh$MainBranch <- as.factor(eh$MainBranch)
+
 ```
 
 ### j) Endurskýrið flokkana í EdLevel breytunni þannig að nöfnin verði styttri og á íslensku. Endurskýrið einnig nöfnin á löndunum þannig að þau verði á íslensku.
