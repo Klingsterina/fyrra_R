@@ -44,7 +44,11 @@ summary(eh$years_before_pro)
 eh %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_before_pro
 ```
 
-### d)
+### d
+```{r}
+eh <- eh %>%
+  filter(substr(Currency, 1, 3) %in% c("EUR", "USD"))
+```
 
 ### e)
 
