@@ -30,16 +30,26 @@ eh <- eh %>%
 
 ### c)
 ```{r}
-nrow(eh)  # Telur fjölda lína eftir síun
-table(eh$MainBranch)  # Sýnir tíðnidreifingu í MainBranch
-table(eh$Employment)  # Sýnir tíðnidreifingu í Employment
+eh <- eh %>%
+  mutate(YearsCodingBeforeDev = as.numeric(YearsCode) - as.numeric(YearsCodePro))
 
-eh$years_before_pro <- eh$YearsCode - eh$YearsCodePro
-
-summary(abs(eh$years_before_pro))
-eh %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_before_pro)
-
+summary(eh$YearsCodingBeforeDev)
 ```
+Samkvæmt þessum upplýsingum hefur a.m.k. einn einstaklingur skráð að hann hafi starfað sem forritari lengur heldur en hann hefur forritað. Þetta sést því mismunurinn er í mínus. Þetta er ekki hægt. Skoðum hversu margir einstaklingar hafa skráð upplýsingarnar sínar vitlaust á þessa vegu:
+
+```{r}
+sum(eh$YearsCodingBeforeDev < 0, na.rm = TRUE)
+```
+
+265 einstaklingar eru með skráð að þeir hafi starfað sem forritari amk einu ári lengur en þeir hafa forritað, sem stemmir ekki. Filterum út þá sem misskildu spurninguna:
+
+```{r}
+eh_fixedYears <- eh %>% 
+  filter(YearsCodingBeforeDev >= 0)
+summary(eh_fixedYears$YearsCodingBeforeDev)
+```
+
+Þá fáum við mun raunsærri gildi.
 
 ### d
 ```{r}
