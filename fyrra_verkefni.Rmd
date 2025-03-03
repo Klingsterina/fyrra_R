@@ -24,7 +24,7 @@ eh <- read_csv("https://ahj.hi.is/survey_results_public_rev.csv")
 ### b)
 ```{r}
 eh <- eh %>%
-  filter(MainBranch == "I am a developer by profession",
+  filter(MainBranch == "I am a developer by profession" &
          Employment == "Employed, full-time")
 ```
 
