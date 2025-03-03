@@ -34,14 +34,11 @@ nrow(eh)  # Telur fjölda lína eftir síun
 table(eh$MainBranch)  # Sýnir tíðnidreifingu í MainBranch
 table(eh$Employment)  # Sýnir tíðnidreifingu í Employment
 
-eh <- eh %>%
-  mutate(YearsCode = as.numeric(YearsCode),
-         YearsCodePro = as.numeric(YearsCodePro),
-         years_before_pro = YearsCode - YearsCodePro)
+eh$years_before_pro <- eh$YearsCode - eh$YearsCodePro
 
-summary(eh$years_before_pro)
+summary(abs(eh$years_before_pro))
+eh %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_before_pro)
 
-eh %>% filter(years_before_pro < 0) %>% select(YearsCode, YearsCodePro, years_before_pro
 ```
 
 ### d)
