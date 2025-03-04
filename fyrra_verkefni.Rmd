@@ -21,6 +21,8 @@ library(tidyverse)  # Fyrir gagnavinnslu
 library(readr)      # Fyrir gagnainnlestur
 library(dplyr)
 library(ggplot2)    # Búa til gröf
+library(knitr)      # Kable-töflur sem eru fallegri
+library(scales)     # Format á tölur
 ```
 
 # HLUTI 1
@@ -65,34 +67,28 @@ summary(eh_fixedYears$YearsCodingBeforeDev)
 ## d) 
 **Veljið svör frá fólki sem gefur launin sín upp í Evrum eða Dollurum (USD). Notið aðeins svör frá þessum einstaklingum það sem eftir er verkefnisins (yfirskrifið ramman frá því í b) lið).**
 ```{r}
-# Remove extra text in Currency column
 eh$Currency <- substr(eh$Currency, 1, 3)
-
-# Keep only salaries reported in EUR or USD
 eh <- eh %>% filter(Currency %in% c("EUR", "USD"))
-
 ```
 
 ## e) 
 **Skoðið CompTotal breytuna. Eru einhverjir augljósir útlagar í breytunni? Ef svo, hvert/hver eru gildin? Fjarlægið þessa auljósu útlaga. Yfirskrifið gamla rammann.**
 ```{r}
-# Ensure CompTotal is numeric
+# Passa að CompTotal sé tala
 eh$CompTotal <- as.numeric(eh$CompTotal)
 
-# Remove NAs
+# Filtera út NA gildi
 eh <- eh %>% filter(!is.na(CompTotal))
 
-# Compute IQR to detect outliers
+# Reikna IQR og filtera út útlaga
 Q1 <- quantile(eh$CompTotal, 0.25, na.rm = TRUE)
 Q3 <- quantile(eh$CompTotal, 0.75, na.rm = TRUE)
 IQR_value <- Q3 - Q1
 lower_bound <- Q1 - 1.5 * IQR_value
 upper_bound <- Q3 + 1.5 * IQR_value
-
-# Filter out outliers
 eh <- eh %>% filter(CompTotal >= lower_bound & CompTotal <= upper_bound)
 
-# Check new salary summary
+# Birta uppfærðu gögnin í CompTotal
 summary(eh$CompTotal)
 
 ```
@@ -111,14 +107,14 @@ eh %>% select(Currency, CompTotal, CompTotalUSD) %>% head(10)
 ## g) 
 **Sýnið fjölda svara frá hverju og einu landi frá þeim 10 löndum sem flest svörin koma frá.**
 ```{r}
-# Count number of responses per country
+# Telja fjölda svara frá hverju landi
 country_counts <- eh %>%
   count(Country, sort = TRUE)
 
-# Get the top 10 countries
+# Finna topp 10 löndin
 top_10_countries <- head(country_counts, 10)
 
-# Display results
+# Birta niðurstöður
 top_10_countries
 
 ```
@@ -131,7 +127,7 @@ countries_over_300 <- country_counts %>% filter(n >= 300)
 
 selected_countries <- c("United States of America", "Germany", "France")
 
-# Yfirskrifa gagnaramman með svörum frá þessum löndum
+# Yfirskrifa gagnarammann með svörum frá þessum löndum
 eh <- eh %>% filter(Country %in% selected_countries)
 ```
 
@@ -150,39 +146,48 @@ eh$RemoteWork <- as.factor(eh$RemoteWork)
 eh$OrgSize <- as.factor(eh$OrgSize)
 eh$DevType <- as.factor(eh$DevType)
 eh$MainBranch <- as.factor(eh$MainBranch)
-
 ```
 
 ## j) 
 **Endurskýrið flokkana í EdLevel breytunni þannig að nöfnin verði styttri og á íslensku. Endurskýrið einnig nöfnin á löndunum þannig að þau verði á íslensku.**
 ```{r}
 eh$EdLevel <- recode(eh$EdLevel,
-  "Primary/elementary school" = "Grunnskóli",
-  "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)" = "Framhaldsskóli",
-  "Some college/university study without earning a degree" = "Hóf nám án gráðu",
+  "Primary/elementary school" = "Grunnskólapróf",
+  "Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)" = "Framhaldsskólapróf",
+  "Some college/university study without earning a degree" = "Háskólanám án gráðu",
   "Associate degree (A.A., A.S., etc.)" = "Diplóma",
-  "Bachelor’s degree (B.A., B.S., B.Eng., etc.)" = "Bakkalár",
-  "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)" = "Meistara gráða",
+  "Bachelor’s degree (B.A., B.S., B.Eng., etc.)" = "Bakkalárgráða",
+  "Master’s degree (M.A., M.S., M.Eng., MBA, etc.)" = "Meistaragráða",
   "Professional degree (JD, MD, Ph.D, Ed.D, etc.)" = "Doktorspróf",
   "Something else" = "Annað"
 )
-table(eh$EdLevel)
+# Skilgreina rétta röð fyrir menntastigin
+education_levels_order <- c("Grunnskólapróf", "Framhaldsskólapróf", "Háskólanám án gráðu", "Diplóma", "Bakkalárgráða", "Meistaragráða", "Doktorspróf", "Annað")
 
+# Raða menntastigunum
+eh$EdLevel <- factor(eh$EdLevel, levels = education_levels_order)
+
+# Skoða menntastigin í töflu
+kable(table(eh$EdLevel), col.names = c("Menntunarstig", "Fjöldi svarenda"))
+```
+```{r}
 eh$Country <- recode(eh$Country,
                      "United States of America" = "Bandaríkin",
                      "Germany" = "Þýskaland",
                      "France" = "Frakkland")
-table(eh$Country)
+kable(table(eh$Country), col.names = c("Land", "Fjöldi svarenda"))
 ```
 
 # HLUTI 2
 ## k) 
 **Notið viðeigandi myndrit sem sýnir árslaun svarenda í dollurum (USD). Lýsið í örfáum orðum því sem þið sjáið á myndinni. Hér gæti verið góð hugmynd að fjarlægja einhver svör. Rökstyðjið af hverju þið ákváðuð að gera það og teiknið sams konar mynd aftur (eftir að þið fjarlægið).**
 ```{r}
-ggplot(eh, aes(x = CompTotalUSD)) + 
+launsvarenda <- ggplot(eh, aes(x = CompTotalUSD)) + 
   geom_histogram(bins = 30, fill="steelblue", color="black") +
   labs(title = "Árslaun í dollurum (USD)", x = "Árslaun (USD)", y = "Fjöldi svarenda") +
   theme_minimal()
+
+launsvarenda
 ```
 
 ## l) 
@@ -191,7 +196,17 @@ er að testa
 
 ## m) 
 **Nú skuluð þið aftur notað viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().**
+```{r}
+annual_salaries_by_country_education <- ggplot(eh, aes(x = EdLevel, y = CompTotalUSD)) +
+  geom_boxplot(fill = "steelblue", color = "black") +
+  labs(title = "Árslaun í dollurum (USD) eftir löndum og menntun", x = "Menntun", y = "Árslaun (USD)") +
+  theme_minimal() +
+  facet_wrap(~ Country) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(labels = comma)
 
+annual_salaries_by_country_education
+```
 ## n) 
 **Veljið ykkur tvær talnabreytur sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 
@@ -202,6 +217,10 @@ er að testa
 # HLUTI 3
 ## p) 
 **Búið til töflu sem sýnir fjölda svarenda eftir löndum og menntun.**
+```{r}
+svarenda_tafla <- table(eh$EdLevel, eh$Country)
+kable(svarenda_tafla, caption = "Fjöldi svarenda eftir löndum og menntun")
+```
 
 ## q) 
 **Búið til töflu sem sýnir hlutfall svarenda á hverju menntunarstigi fyrir sig eftir löndum. Það á t.d. að vera hægt að lesa hveru hátt hlutfall svarenda er með BS gráðu í hverju landi fyrir sig osfrv.**
