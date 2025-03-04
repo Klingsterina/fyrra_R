@@ -1,6 +1,6 @@
 # Fyrra R verkefni í STÆ209G
 
-Í verkefninu munuð unnum við með árlega könnun sem framkvæmd er meðal notenda Stack Overflow (Stack Overflow Annual Developer Survey) en gögnin innihalda svör 65437 forritara frá árinu 2024 og eru breyturnar 114 talsins.
+Í verkefninu unnum við með árlega könnun sem framkvæmd er meðal notenda Stack Overflow (Stack Overflow Annual Developer Survey) en gögnin innihalda svör 65437 forritara frá árinu 2024 og eru breyturnar 114 talsins.
 
 Gögnin eru fengin af: https://survey.stackoverflow.co
 
