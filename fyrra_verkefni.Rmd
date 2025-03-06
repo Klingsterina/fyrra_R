@@ -1,5 +1,7 @@
 ---
-author: Eygló Ástþórsdóttir og Helga Björg Helgadóttir
+author: |
+  Eygló Ástþórsdóttir <eya19@hi.is>  
+  Helga Björg Helgadóttir <hbh54@hi.is>
 date: 19. feb 2025
 title: "Fyrra R verkefni"
 output: 
@@ -16,6 +18,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
 ```
 
+### Library notkun:
 ```{r}
 library(tidyverse)  # Fyrir gagnavinnslu
 library(readr)      # Fyrir gagnainnlestur
