@@ -298,6 +298,7 @@ codeing_years_pro_and_salary
 **Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 
 Við völdum breyturnar: DevType og YearsCode. Við völdum að nota boxrit til að birta niðurstöðurnar.
+
 ```{r}
 # Reikna út 10 algengustu DevType gildi
 top_10_devtypes <- eh %>%
