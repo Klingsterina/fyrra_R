@@ -333,7 +333,7 @@ fjoldi_svarenda_tafla <- table(eh$EdLevel, eh$Country)
 
 # Birta töflu
 kable(fjoldi_svarenda_tafla, caption = "<center>Fjöldi svarenda eftir löndum og menntun</center>", format = "html", align = "c") %>%
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "bordered"))
 ```
 
 ## q) 
@@ -355,7 +355,7 @@ colnames(hlutfall_svarenda_tafla)[1] <- ""
 
 # Birta töflu
 kable(hlutfall_svarenda_tafla, format = "html", align = "c") %>%
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "bordered"))
 ```
 
 ## r) 
