@@ -102,9 +102,6 @@ summary(eh$CompTotal)
 eh$CompTotalUSD <- ifelse(eh$Currency == "USD", eh$CompTotal,
                           ifelse(eh$Currency == "EUR", eh$CompTotal * 1.08, NA))  
 
-summary(eh$CompTotalUSD)
-eh %>% select(Currency, CompTotal, CompTotalUSD) %>% head(10)
-
 ```
 
 ## g) 
@@ -124,7 +121,7 @@ top_10_countries
 
 
 ## h) 
-**Veljið forritara frá þremur löndum til að vinna áfram með. Það þurfa að vera a.m.k. 300 svör frá þeim löndum sem þið vinnið með. Yfirskrifið gagnaramman í e) lið með svörum frá þessum þremur löndum. Þið eigið að nota þennan gagnaramma það sem eftir er verkefnisins.**
+**Veljið forritara frá þremur löndum til að vinna áfram með. Það þurfa að vera a.m.k. 300 svör frá þeim löndum sem þið vinnið með. Yfirskrifið gagnarammann í e) lið með svörum frá þessum þremur löndum. Þið eigið að nota þennan gagnaramma það sem eftir er verkefnisins.**
 ```{r}
 countries_over_300 <- country_counts %>% filter(n >= 300)
 
@@ -145,8 +142,6 @@ eh$CompTotalUSD <- as.numeric(eh$CompTotalUSD)
 eh$Country <- as.factor(eh$Country)
 eh$EdLevel <- as.factor(eh$EdLevel)
 eh$Employment <- as.factor(eh$Employment)
-eh$RemoteWork <- as.factor(eh$RemoteWork)
-eh$OrgSize <- as.factor(eh$OrgSize)
 eh$DevType <- as.factor(eh$DevType)
 eh$MainBranch <- as.factor(eh$MainBranch)
 ```
@@ -187,16 +182,20 @@ kable(table(eh$Country), col.names = c("Land", "Fjöldi svarenda"))
 ```{r}
 launsvarenda <- ggplot(eh, aes(x = CompTotalUSD, fill = after_stat(x))) +
   geom_histogram(bins = 30, color="black") +
-  scale_fill_gradient(low = "#a5eeac", high = "#0d284a") +
+  scale_fill_gradient(low = "#a5eeac",
+                      high = "#0d284a",
+                      labels = scales::comma,
+                      breaks = seq(0, 300000, by = 50000),
+                      limits = c(0, 300000)) +              
+
   labs(title = "Árslaun svarenda í dollurum (USD)",
        x = "Árslaun í dollurum",
        y = "Fjöldi svarenda",
        fill = "Árslaun") +
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   scale_x_continuous(labels = scales::comma, 
-                     breaks = seq(min(eh$CompTotalUSD, na.rm = TRUE),
-                                  max(eh$CompTotalUSD, na.rm = TRUE), 
-                                  by = 50000)) +
+                     breaks = seq(0, 300000, by = 50000),
+                     limits = c(0, 300000)) +
   theme_minimal()
 
 launsvarenda
@@ -220,8 +219,11 @@ launLanda <- ggplot(eh, aes(x = Country, y = CompTotalUSD, fill = Country)) +
 launLanda
 ```
 
+### Lýsing:
+Örfá orð koma hér......
+
 ## m) 
-**Nú skuluð þið aftur notað viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().**
+**Nú skuluð þið aftur nota viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().**
 ```{r}
 annual_salaries_by_country_education <- ggplot(eh, aes(x = EdLevel, y = CompTotalUSD, fill = Country)) +
   geom_boxplot(color = "black", outlier.shape = 16) +
@@ -233,9 +235,13 @@ annual_salaries_by_country_education <- ggplot(eh, aes(x = EdLevel, y = CompTota
 
 annual_salaries_by_country_education
 ```
+### Lýsing:
+Örfá orð koma hér....
 
 ## n) 
 **Veljið ykkur tvær talnabreytur sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
+
+Við völdum breyturnar: YearsCodePro og CompTotalUSD. Völdum að nota punktarit til að birta niðurstöður.
 
 ```{r}
 codeing_years_pro_and_salary <- ggplot(
@@ -267,6 +273,8 @@ codeing_years_pro_and_salary
 
 ## o) 
 **Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
+
+Við völdum breyturnar: DevType og YearsCode. Völdum að nota boxrit til að birta niðurstöður.
 ```{r}
 # Reikna út 10 algengustu DevType gildi
 top_10_devtypes <- eh %>%
