@@ -107,9 +107,9 @@ summary(eh$CompTotal)
 ```
 
 ### Niðurstaða:
-Í fyrri samantektinni (Mynd 1) sérðu Max = 1.000e+150, sem er óeðlilega hátt gildi (sennilega rangt skráð eða villa í gögnum).
-Eftir að síað er út öfgagildin (með því að fjarlægja raðir þar sem CompTotal var fyrir utan Q1 - 1.5*IQR og Q3 + 1.5*IQR), endar Max á 280,000.
-Niðurstaðan er að eftir hreinsunina sést raunhæfari mynd af árslaunum, þar sem óraunhæf gildi eins og 1.000e+150 hafa verið klippt burt.
+Í fyrri samantektinni (áður en útlögin eru fjarlægð) sást max gildi 1.000e+150, sem er augljóslega óraunhæft.
+Eftir að útlögunum er eytt með IQR-aðferðinni (1.5 * IQR yfir Q3 og undir Q1) lækkar max í 280.000, sem er miklu nær raunhæfum launum.
+Þetta sýnir að gögnin innihéldu a.m.k. eitt rangt eða óeðlilega hátt gildi (1.000e+150) sem nú er fjarlægt, og gagnasafnið gefur því skýrari mynd af raunverulegri launadreifingu.
 
 ## f) 
 **Búið til nýja breytu sem heitir CompTotalUSD þar sem öll laun eru í dollurum. Ábending: Hér gæti verið gott að nota ifelse() skipun.**
