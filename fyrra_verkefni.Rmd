@@ -77,24 +77,36 @@ eh <- eh %>% filter(Currency %in% c("EUR", "USD"))
 ## e) 
 **Skoðið CompTotal breytuna. Eru einhverjir augljósir útlagar í breytunni? Ef svo, hvert/hver eru gildin? Fjarlægið þessa auljósu útlaga. Yfirskrifið gamla rammann.**
 ```{r}
-# Passa að CompTotal sé tala
+# Umbreyta breytunni CompTotal í tölubreytu (numeric)
 eh$CompTotal <- as.numeric(eh$CompTotal)
 
-# Filtera út NA gildi
+# Fjarlægja raðir þar sem CompTotal er NA
 eh <- eh %>% filter(!is.na(CompTotal))
 
-# Reikna IQR og filtera út útlaga
+# Reikna fyrri fjórðung (Q1) og þriðji fjórðung (Q3) fyrir CompTotal
 Q1 <- quantile(eh$CompTotal, 0.25, na.rm = TRUE)
 Q3 <- quantile(eh$CompTotal, 0.75, na.rm = TRUE)
-IQR_value <- Q3 - Q1
-lower_bound <- Q1 - 1.5 * IQR_value
-upper_bound <- Q3 + 1.5 * IQR_value
-eh <- eh %>% filter(CompTotal >= lower_bound & CompTotal <= upper_bound)
 
-# Birta uppfærðu gögnin í CompTotal
+# Reikna meðalbil (IQR = Q3 - Q1)
+IQR_value <- Q3 - Q1
+
+# Skoða uppfærðu dreifinguna fyrir CompTotal
 summary(eh$CompTotal)
 
 ```
+```{r}
+# Setja niðurstaðamörk fyrir útlaga: 1.5 * IQR neðan og ofan á Q1 og Q3
+lower_bound <- Q1 - 1.5 * IQR_value
+upper_bound <- Q3 + 1.5 * IQR_value
+# Fjarlægja raðir þar sem CompTotal fellur ekki innan þessa marka
+eh <- eh %>% filter(CompTotal >= lower_bound & CompTotal <= upper_bound)
+summary(eh$CompTotal)
+```
+
+### Niðurstaða:
+Í fyrri samantektinni (Mynd 1) sérðu Max = 1.000e+150, sem er óeðlilega hátt gildi (sennilega rangt skráð eða villa í gögnum).
+Eftir að síað er út öfgagildin (með því að fjarlægja raðir þar sem CompTotal var fyrir utan Q1 - 1.5*IQR og Q3 + 1.5*IQR), endar Max á 280,000.
+Niðurstaðan er að eftir hreinsunina sést raunhæfari mynd af árslaunum, þar sem óraunhæf gildi eins og 1.000e+150 hafa verið klippt burt.
 
 ## f) 
 **Búið til nýja breytu sem heitir CompTotalUSD þar sem öll laun eru í dollurum. Ábending: Hér gæti verið gott að nota ifelse() skipun.**
@@ -219,8 +231,12 @@ launLanda <- ggplot(eh, aes(x = Country, y = CompTotalUSD, fill = Country)) +
 launLanda
 ```
 
-### Lýsing:
-Örfá orð koma hér......
+### Helstu atriði sem má lesa úr myndinni:
+Bandaríkin eru með hæstu árslaunin að meðaltali; miðgildið er hærra en í hinum löndunum. Einnig er nokkuð breið dreifing og margir útlaga með mjög há laun.
+
+Þýskaland er í miðjunni, með hærri miðgildi en Frakkland, en lægri en Bandaríkin. Dreifingin er þó nokkuð mikil og nær upp í töluvert há laun hjá sumum svarendum.
+
+Frakkland er með lægri laun miðað við hin löndin. Kassinn er neðar á ásnum, sem bendir til að langflestir svarendur séu með undir 100.000 USD á ári.
 
 ## m) 
 **Nú skuluð þið aftur nota viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().**
@@ -235,8 +251,14 @@ annual_salaries_by_country_education <- ggplot(eh, aes(x = EdLevel, y = CompTota
 
 annual_salaries_by_country_education
 ```
-### Lýsing:
-Örfá orð koma hér....
+
+### Helstu atriði sem má lesa úr myndinni:
+Bandaríkin eru almennt með hæstu launin fyrir flest menntunarstig. Hinsvegar þeir svarendur sem svöruðu "Annað" eru með töluvert lægri laun miðað við hina sem kláruðu einhverskonar próf.
+
+Frakkland og Þýskaland eru mjög svipuð en svarendur eru með töluvert lægri laun miðað við bandaríkin þar sem meðal laun hjá Frakklandi og Þýskalandi eru undir 100Þ USD.
+
+Boxritin hækkar þegar menntunarstigið hækkar, sem gefur til kynna að meðallaun eða miðgildi séu meiri fyrir þá sem eru með bakkalár, meistaragráðu eða doktorspróf.
+Samt sem áður er breidd kassanna og fjöldi útlaga í hverjum menntunarflokki umtalsverður. Þetta sýnir að launin geta verið mjög breytileg innan sama menntunarstigs.
 
 ## n) 
 **Veljið ykkur tvær talnabreytur sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
