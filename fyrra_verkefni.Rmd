@@ -185,15 +185,17 @@ kable(table(eh$Country), col.names = c("Land", "Fjöldi svarenda"))
 ## k) 
 **Notið viðeigandi myndrit sem sýnir árslaun svarenda í dollurum (USD). Lýsið í örfáum orðum því sem þið sjáið á myndinni. Hér gæti verið góð hugmynd að fjarlægja einhver svör. Rökstyðjið af hverju þið ákváðuð að gera það og teiknið sams konar mynd aftur (eftir að þið fjarlægið).**
 ```{r}
-launsvarenda <- ggplot(eh, aes(x = CompTotalUSD, fill = ..count..)) +
+launsvarenda <- ggplot(eh, aes(x = CompTotalUSD, fill = after_stat(x))) +
   geom_histogram(bins = 30, color="black") +
-  scale_fill_gradientn(colors = c("lightblue", "darkblue")) +
-  labs(title = "Árslaun í dollurum (USD)",
-       x = "Árslaun (USD)", y = "Fjöldi svarenda") +
+  scale_fill_gradient(low = "#a5eeac", high = "#0d284a") +
+  labs(title = "Árslaun svarenda í dollurum (USD)",
+       x = "Árslaun í dollurum",
+       y = "Fjöldi svarenda",
+       fill = "Árslaun") +
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   scale_x_continuous(labels = scales::comma, 
-                     breaks = seq(min(eh$CompTotalUSD),
-                                  max(eh$CompTotalUSD), 
+                     breaks = seq(min(eh$CompTotalUSD, na.rm = TRUE),
+                                  max(eh$CompTotalUSD, na.rm = TRUE), 
                                   by = 50000)) +
   theme_minimal()
 
