@@ -225,8 +225,36 @@ annual_salaries_by_country_education <- ggplot(eh, aes(x = EdLevel, y = CompTota
 
 annual_salaries_by_country_education
 ```
+
 ## n) 
 **Veljið ykkur tvær talnabreytur sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
+
+```{r}
+codeing_years_pro_and_salary <- ggplot(
+  # breytan data er fenginn með hjálp frá ai
+  data = eh %>% 
+    filter(!is.na(YearsCodePro),
+           !is.na(CompTotalUSD),               # Engin laun sem eru NA
+           CompTotalUSD > 0),                   # Engin núlllaun
+  aes(x = YearsCodePro, y = CompTotalUSD, color = YearsCodePro)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  scale_color_gradient(low = "lightpink", high = "blue") +
+  labs(title = "Samband reynsluár í forritun og árslauna (USD)",
+       x = "Ár sem atvinnuforritari (YearsCodePro)",
+       y = "Árslaun í USD (CompTotalUSD)") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal()
+codeing_years_pro_and_salary
+```
+
+### Hvað sjáum við út frá þessari mynd
+
+**Hallatala:** Línan hallar upp á við, sem bendir til jákvæðs sambands milli atvinnureynslu í forritun og árslauna. Þó þó nokkur breidd sé í gögnunum.
+
+**Mikið bil í launum:** Hægt er að sjá fólk með stuttan starfsaldur (0–10 ár) á mjög fjölbreyttum launum, upp í 200þ USD og meira.
+
+**StarfsAldur:** Nokkrir sem hafa starfað lengi (20+ ár) eru samt með meðal- eða lægri laun en sumir sem hafa starfað styttra, sem sýnir að sambandið er ekki sterkt og laun geta ráðist af mörgum þáttum
 
 ## o) 
 **Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
