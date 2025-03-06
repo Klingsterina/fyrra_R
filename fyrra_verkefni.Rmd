@@ -246,11 +246,11 @@ codeing_years_pro_and_salary <- ggplot(
   geom_point(alpha = 0.6) +
   geom_smooth(method = "lm", se = FALSE, color = "black") +
   scale_color_gradient(low = "lightpink", high = "blue") +
-  labs(title = "Starfsaldur forritara og árslaun þeirra í dollurum (USD)",
-       x = "Fjöldi ára í geira",
+  labs(title = "Starfsaldur atvinnuforritara og árslaun þeirra í dollurum (USD)",
+       x = "Fjöldi ára sem atvinnuforritari",
        y = "Árslaun",
        color = "Fjöldi ára í geira") +
-  scale_y_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma, breaks = seq(min(eh$CompTotalUSD), max(eh$CompTotalUSD), 30000)) +
   theme_minimal()
 codeing_years_pro_and_salary
 ```
@@ -259,7 +259,7 @@ codeing_years_pro_and_salary
 
 **Hallatala:** Línan hallar upp á við, sem bendir til jákvæðs sambands milli atvinnureynslu í forritun og árslauna. Þó þó nokkur breidd sé í gögnunum.
 
-**Mikið bil í launum:** Hægt er að sjá fólk með stuttan starfsaldur (0–10 ár) á mjög fjölbreyttum launum, upp í 200þ USD og meira.
+**Mikið bil í launum:** Hægt er að sjá fólk með stuttan starfsaldur (0–10 ár) er á mjög fjölbreyttum launum, upp í 270þ USD og meira.
 
 **StarfsAldur:** Nokkrir sem hafa starfað lengi (20+ ár) eru samt með meðal- eða lægri laun en sumir sem hafa starfað styttra, sem sýnir að sambandið er ekki sterkt og laun geta ráðist af mörgum þáttum
 
@@ -319,9 +319,11 @@ dev_type_and_years_coding
 
 **Breidd:** Allir flokkar hafa talsverða breidd í árafjölda. Sumir hafa starfað stutt en aðrir mjög lengi.
 
-**Miðgildin:** Miðgildin eru svipuð í nokkrum flokkum (t.d. front-end“, back-end“, full-stack“), en sumir flokkar eins og Engineering manager virðast með pinku hærri miðgildi.
+**Miðgildin:** Miðgildin eru svipuð í nokkrum flokkum (t.d. mobile, back-end, full-stack og embedded applications or devices), en sumir flokkar eins og Engineering manager virðast með pinku hærri miðgildi.
 
-**Útlagar:** Margir rauðir punktar benda til þess að þótt flestir séu með nokkra ára reynslu, séu alltaf einstaklingar sem hafa miklu lengri reynslu en aðrir – eða mjög styttri. 
+**Útlagar:** Margir punktar benda til þess að þótt flestir séu með nokkra ára reynslu, séu alltaf einstaklingar sem hafa miklu lengri reynslu en aðrir – eða mjög styttri. 
+
+**Dreifing:** Samkvæmt myndinni þá eru flestir sem hafa starfstitil búnir að vinna í um það bil 10 ár. Þannig Dreifingin er frekar jöfn á starfstitla. Hinsvegar þá stendur "Engineering manager" út úr, það lítur út fyrir að þeir sem starfa við það, séu búnir að starfa í 15 til 25 ár.
 
 # HLUTI 3
 ## p) 
