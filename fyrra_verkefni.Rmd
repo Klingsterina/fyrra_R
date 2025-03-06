@@ -23,6 +23,8 @@ library(dplyr)
 library(ggplot2)    # Búa til gröf
 library(knitr)      # Kable-töflur sem eru fallegri
 library(scales)     # Format á tölur
+library(tidyr)
+library(stringr)
 ```
 
 # HLUTI 1
@@ -258,7 +260,54 @@ codeing_years_pro_and_salary
 
 ## o) 
 **Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
+```{r}
+# Reikna út 10 algengustu DevType gildi
+top_10_devtypes <- eh %>%
+  count(DevType, sort = TRUE) %>%
+  slice_head(n = 10)
 
+# Sía úr eh þeim raðir sem eru í top 10 DevType
+eh_dev_top10 <- eh %>%
+  filter(DevType %in% top_10_devtypes$DevType)
+
+# Skilgreina viðeigandi röð fyrir DevType
+development_order <- c("Developer, back-end", 
+                       "Developer, front-end", 
+                       "Developer, full-stack", 
+                       "Developer, mobile", 
+                       "Developer, embedded applications or devices", 
+                       "Developer, desktop or enterprise applications", 
+                       "Engineering manager", 
+                       "Data scientist or machine learning specialist", 
+                       "Data engineer",
+                       "Other (please specify):")
+
+# Endurraða DevType samkvæmt development_order
+eh_dev_top10 <- eh_dev_top10 %>%
+  mutate(DevType = factor(DevType, levels = development_order))
+
+# Teikna boxplotið
+dev_type_and_years_coding <- ggplot(eh_dev_top10, aes(x = DevType, y = YearsCode)) +
+  geom_boxplot(outlier.color = "red") +
+  labs(
+    title = "Samanburður á DevType og YearsCode",
+    x = "Tegund forritara (DevType)",
+    y = "Ár sem forritari (YearsCode)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+dev_type_and_years_coding
+
+```
+
+### Hvað sjáum við út frá þessari mynd?
+
+**Breidd:** Allir flokkar hafa talsverða breidd í árafjölda. Sumir hafa starfað stutt en aðrir mjög lengi.
+
+**Miðgildin:** Miðgildin eru svipuð í nokkrum flokkum (t.d. front-end“, back-end“, full-stack“), en sumir flokkar eins og Engineering manager virðast með pinku hærri miðgildi.
+
+**Útlagar:** Margir rauðir punktar benda til þess að þótt flestir séu með nokkra ára reynslu, séu alltaf einstaklingar sem hafa miklu lengri reynslu en aðrir – eða mjög styttri. 
 
 # HLUTI 3
 ## p) 
