@@ -23,7 +23,6 @@ library(dplyr)
 library(ggplot2)    # Búa til gröf
 library(knitr)      # Kable-töflur sem eru fallegri
 library(scales)     # Format á tölur
-install.packages("kableExtra")
 library(kableExtra)
 library(tidyr)
 library(stringr)
@@ -186,9 +185,11 @@ kable(table(eh$Country), col.names = c("Land", "Fjöldi svarenda"))
 ## k) 
 **Notið viðeigandi myndrit sem sýnir árslaun svarenda í dollurum (USD). Lýsið í örfáum orðum því sem þið sjáið á myndinni. Hér gæti verið góð hugmynd að fjarlægja einhver svör. Rökstyðjið af hverju þið ákváðuð að gera það og teiknið sams konar mynd aftur (eftir að þið fjarlægið).**
 ```{r}
-launsvarenda <- ggplot(eh, aes(x = CompTotalUSD)) + 
-  geom_histogram(bins = 30, fill="steelblue", color="black") +
-  labs(title = "Árslaun í dollurum (USD)", x = "Árslaun (USD)", y = "Fjöldi svarenda") +
+launsvarenda <- ggplot(eh, aes(x = CompTotalUSD, fill = ..count..)) +
+  geom_histogram(bins = 30, color="black") +
+  scale_fill_gradientn(colors = c("lightblue", "darkblue")) +
+  labs(title = "Árslaun í dollurum (USD)",
+       x = "Árslaun (USD)", y = "Fjöldi svarenda") +
   scale_y_continuous(breaks = seq(0, 500, by = 100)) +
   scale_x_continuous(labels = scales::comma, 
                      breaks = seq(min(eh$CompTotalUSD),
@@ -203,10 +204,11 @@ launsvarenda
 **Notið viðeigandi myndrit sem sýnir árslaun þátttakenda í USD eftir löndunum þremur. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 ```{r}
 launLanda <- ggplot(eh, aes(x = Country, y = CompTotalUSD, fill = Country)) +
-  geom_boxplot(outlier.color = "red", outlier.shape = 16) +
-  labs(title = "Árslaun þátttakenda í dollurum (USD) eftir hverju landi", 
+  geom_boxplot(outlier.color = "black", outlier.shape = 16) +
+  labs(title = "Árslaun svarenda í dollurum (USD) eftir landi",
        y = "Árslaun (USD)", 
-       x = "Land") +
+       x = "Land",
+       fill = "Land") +
   scale_y_continuous(labels = scales::comma, 
                      breaks = seq(min(eh$CompTotalUSD),
                                   max(eh$CompTotalUSD), 
@@ -219,12 +221,12 @@ launLanda
 ## m) 
 **Nú skuluð þið aftur notað viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().**
 ```{r}
-annual_salaries_by_country_education <- ggplot(eh, aes(x = EdLevel, y = CompTotalUSD)) +
-  geom_boxplot(fill = "steelblue", color = "black") +
-  labs(title = "Árslaun í dollurum (USD) eftir löndum og menntun", x = "Menntun", y = "Árslaun (USD)") +
+annual_salaries_by_country_education <- ggplot(eh, aes(x = EdLevel, y = CompTotalUSD, fill = Country)) +
+  geom_boxplot(color = "black", outlier.shape = 16) +
+  labs(title = "Árslaun í dollurum (USD) eftir löndum og menntunarstigi", x = "Menntunarstig", y = "Árslaun (USD)", fill = "Land") +
   theme_minimal() +
   facet_wrap(~ Country) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   scale_y_continuous(labels = comma)
 
 annual_salaries_by_country_education
@@ -235,7 +237,7 @@ annual_salaries_by_country_education
 
 ```{r}
 codeing_years_pro_and_salary <- ggplot(
-  # breytan data er fenginn með hjálp frá ai
+  # Breytan data er fengin með hjálp frá AI
   data = eh %>% 
     filter(!is.na(YearsCodePro),
            !is.na(CompTotalUSD),               # Engin laun sem eru NA
@@ -244,9 +246,10 @@ codeing_years_pro_and_salary <- ggplot(
   geom_point(alpha = 0.6) +
   geom_smooth(method = "lm", se = FALSE, color = "black") +
   scale_color_gradient(low = "lightpink", high = "blue") +
-  labs(title = "Samband reynsluár í forritun og árslauna (USD)",
-       x = "Ár sem atvinnuforritari (YearsCodePro)",
-       y = "Árslaun í USD (CompTotalUSD)") +
+  labs(title = "Starfsaldur forritara og árslaun þeirra í dollurum (USD)",
+       x = "Fjöldi ára í geira",
+       y = "Árslaun",
+       color = "Fjöldi ára í geira") +
   scale_y_continuous(labels = scales::comma) +
   theme_minimal()
 codeing_years_pro_and_salary
@@ -289,18 +292,27 @@ eh_dev_top10 <- eh_dev_top10 %>%
   mutate(DevType = factor(DevType, levels = development_order))
 
 # Teikna boxplotið
-dev_type_and_years_coding <- ggplot(eh_dev_top10, aes(x = DevType, y = YearsCode)) +
-  geom_boxplot(outlier.color = "red") +
+dev_type_and_years_coding <- ggplot(eh_dev_top10, aes(x = DevType, y = YearsCode, fill = DevType)) +
+  geom_boxplot(outlier.colour = "black", outlier.shape = 16, outlier.size = 1) +
   labs(
-    title = "Samanburður á DevType og YearsCode",
-    x = "Tegund forritara (DevType)",
-    y = "Ár sem forritari (YearsCode)"
+    title = "Starfsaldur eftir starfstitli",
+    x = "Starfstitill",
+    y = "Starfsaldur í árum",
+    fill = "Starfstitill"
   ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme_light() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_text(size = 12),
+    axis.title = element_text(size = 12),
+    plot.title = element_text(size = 16, hjust = 0.5, margin = margin(b = 10)),
+    plot.subtitle = element_text(size = 12, face = "italic"),
+    panel.grid.major = element_line(size = 0.5, color = "gray"),
+    panel.grid.minor = element_blank()
+  ) +
+  scale_fill_brewer(palette = "Set3")
 
 dev_type_and_years_coding
-
 ```
 
 ### Hvað sjáum við út frá þessari mynd?
@@ -374,8 +386,8 @@ kable(laun_tafla, format = "html", digits = 0, caption="<center>Laun eftir mennt
     position = "center",
     font_size = 16
   ) %>%
-  column_spec(1, bold = TRUE) %>%  # Bold Country column
-  column_spec(2, bold = TRUE) %>%  # Bold EdLevel column
+  column_spec(1, bold = TRUE) %>%
+  column_spec(2, bold = TRUE) %>%
   row_spec(0, background = "#f2f2f2", bold = TRUE) %>%
   collapse_rows(columns = 1:2, valign = "top")
 ```
