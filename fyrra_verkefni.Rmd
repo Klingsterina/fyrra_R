@@ -23,6 +23,8 @@ library(dplyr)
 library(ggplot2)    # Búa til gröf
 library(knitr)      # Kable-töflur sem eru fallegri
 library(scales)     # Format á tölur
+install.packages("kableExtra")
+library(kableExtra)
 library(tidyr)
 library(stringr)
 ```
@@ -313,15 +315,70 @@ dev_type_and_years_coding
 ## p) 
 **Búið til töflu sem sýnir fjölda svarenda eftir löndum og menntun.**
 ```{r}
-svarenda_tafla <- table(eh$EdLevel, eh$Country)
-kable(svarenda_tafla, caption = "Fjöldi svarenda eftir löndum og menntun")
+fjoldi_svarenda_tafla <- table(eh$EdLevel, eh$Country)
+
+# Birta töflu
+kable(fjoldi_svarenda_tafla, caption = "<center>Fjöldi svarenda eftir löndum og menntun</center>", format = "html", align = "c") %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
 ```
 
 ## q) 
-**Búið til töflu sem sýnir hlutfall svarenda á hverju menntunarstigi fyrir sig eftir löndum. Það á t.d. að vera hægt að lesa hveru hátt hlutfall svarenda er með BS gráðu í hverju landi fyrir sig osfrv.**
+**Búið til töflu sem sýnir hlutfall svarenda á hverju menntunarstigi fyrir sig eftir löndum. Það á t.d. að vera hægt að lesa hversu hátt hlutfall svarenda er með BS gráðu í hverju landi fyrir sig osfrv.**
+
+```{r}
+hlutfall_svarenda_tafla <- eh %>%
+  group_by(Country, EdLevel) %>%
+  summarise(fjoldi = n(), .groups = "drop") %>%
+  group_by(EdLevel) %>%
+  mutate(hlutfall = fjoldi / sum(fjoldi)) %>%
+  select(Country, EdLevel, hlutfall) %>%
+  pivot_wider(names_from = Country, values_from = hlutfall)
+
+hlutfall_svarenda_tafla <- hlutfall_svarenda_tafla %>%
+  mutate(across(where(is.numeric), ~ percent(., accuracy = 0.1)))
+
+colnames(hlutfall_svarenda_tafla)[1] <- ""
+
+# Birta töflu
+kable(hlutfall_svarenda_tafla, format = "html", align = "c") %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
+```
 
 ## r) 
 **Búið til töflu sem sýnir meðalárslaun, miðgildi árslauna og staðalfrávik árslauna eftir menntun og löndum. Í tölflunni á einnig að koma fram hvað eru margar mælingar í hverjum flokki.**
+```{r}
+laun_tafla <- eh %>%
+  group_by(Country, EdLevel) %>%
+  summarise(
+    medallaun = mean(CompTotalUSD, na.rm = TRUE),
+    midlaun = median(CompTotalUSD, na.rm = TRUE),
+    stadalfravik_launa = sd(CompTotalUSD, na.rm = TRUE),
+    count = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(Country, EdLevel) %>%
+  rename(
+    `Meðallaun` = medallaun,
+    `Miðgildi` = midlaun,
+    `Staðalfrávik` = stadalfravik_launa,
+    `Fjöldi svarenda` = count,
+    `Land` = Country,
+    `Menntunarstig` = EdLevel
+  )
+
+# Birta töflu
+kable(laun_tafla, format = "html", digits = 0, caption="<center>Laun eftir menntun og landi í USD</center>") %>%
+  kable_styling(
+    full_width = FALSE, 
+    bootstrap_options = c("striped", "hover", "bordered"),
+    position = "center",
+    font_size = 16
+  ) %>%
+  column_spec(1, bold = TRUE) %>%  # Bold Country column
+  column_spec(2, bold = TRUE) %>%  # Bold EdLevel column
+  row_spec(0, background = "#f2f2f2", bold = TRUE) %>%
+  collapse_rows(columns = 1:2, valign = "top")
+```
 
 # Notkun á gervigreind. 
 **Lýsið í nokkrum orðum hvort og ef já, hvernig, þið notuðuð gervigreind við lausn á þessu verkefni.**
