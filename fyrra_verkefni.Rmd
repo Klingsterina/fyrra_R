@@ -263,18 +263,16 @@ codeing_years_pro_and_salary <- ggplot(
 codeing_years_pro_and_salary
 ```
 
-### Hvað sjáum við út frá þessari mynd
+### Hvað sjáum við út frá þessari mynd?
 
-**Hallatala:** Línan hallar upp á við, sem bendir til jákvæðs sambands milli atvinnureynslu í forritun og árslauna. Þó þó nokkur breidd sé í gögnunum.
+**Hallatala:** Línan hallar upp á við, sem bendir til jákvæðs sambands á milli reynslu sem atvinnuforritari og árslauna. Það er þó mikil dreifing á gögnunum og mörg áhugaverð dæmi um gögn sem stangast á við almenna þróun launa. 
 
-**Mikið bil í launum:** Hægt er að sjá fólk með stuttan starfsaldur (0–10 ár) er á mjög fjölbreyttum launum, upp í 270þ USD og meira.
-
-**StarfsAldur:** Nokkrir sem hafa starfað lengi (20+ ár) eru samt með meðal- eða lægri laun en sumir sem hafa starfað styttra, sem sýnir að sambandið er ekki sterkt og laun geta ráðist af mörgum þáttum
+**Mikill launamunur þrátt fyrir svipaðan starfsaldur:** Fólk með stuttan starfsaldur (0–10 ár) er á mjög fjölbreyttum árslaunum, frá nánast engum launum og hátt í 270 þúsund bandaríkjadollara. Sömuleiðis eru dæmi um einstaklinga sem hafa starfað lengi sem forritarar (20+ ár), en eru einungis með meðal- eða jafnvel lægri laun en einstaklingar sem hafa starfað í styttri tíma. Þetta sýnir okkur að laun geta ráðist af mörgum þáttum, og starfsaldur eykur ekki endilega alltaf verðmæti starfsmanns.
 
 ## o) 
 **Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 
-Við völdum breyturnar: DevType og YearsCode. Völdum að nota boxrit til að birta niðurstöður.
+Við völdum breyturnar: DevType og YearsCode. Við völdum að nota boxrit til að birta niðurstöðurnar.
 ```{r}
 # Reikna út 10 algengustu DevType gildi
 top_10_devtypes <- eh %>%
@@ -327,13 +325,11 @@ dev_type_and_years_coding
 
 ### Hvað sjáum við út frá þessari mynd?
 
-**Breidd:** Allir flokkar hafa talsverða breidd í árafjölda. Sumir hafa starfað stutt en aðrir mjög lengi.
+**Dreifing:** Allir starfstitlar hafa talsverða dreifingu á starfsaldri. Það segir okkur að það starfi bæði reynslumiklir og reynslulitlir forritarar innan margra ólíkra sviða.
 
-**Miðgildin:** Miðgildin eru svipuð í nokkrum flokkum (t.d. mobile, back-end, full-stack og embedded applications or devices), en sumir flokkar eins og Engineering manager virðast með pinku hærri miðgildi.
+**Miðgildin:** Miðgildin eru í flestum flokkum í kringum 13-15 ár (t.d. mobile, back-end, full-stack, og embedded applications or devices). Engineering manager er með hæsta miðgildið, í kringum 20 ár, sem gefur til kynna um að meiri starfsreynslu sé krafist fyrir þann starfstitil.
 
-**Útlagar:** Margir punktar benda til þess að þótt flestir séu með nokkra ára reynslu, séu alltaf einstaklingar sem hafa miklu lengri reynslu en aðrir – eða mjög styttri. 
-
-**Dreifing:** Samkvæmt myndinni þá eru flestir sem hafa starfstitil búnir að vinna í um það bil 10 ár. Þannig Dreifingin er frekar jöfn á starfstitla. Hinsvegar þá stendur "Engineering manager" út úr, það lítur út fyrir að þeir sem starfa við það, séu búnir að starfa í 15 til 25 ár.
+**Útlagar:** Út frá myndinni má sjá að flestir forritarar eru með 10-25 ára reynslu. Svörtu punktarnir fyrir ofan spannirnar gefa þó til kynna um að það séu útlagar sem hafa afgerandi meiri starfsreynslu, á bilinu 32-50 ár.
 
 # HLUTI 3
 ## p) 
