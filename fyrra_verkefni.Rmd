@@ -185,6 +185,11 @@ kable(table(eh$Country), col.names = c("Land", "Fjöldi svarenda"))
 launsvarenda <- ggplot(eh, aes(x = CompTotalUSD)) + 
   geom_histogram(bins = 30, fill="steelblue", color="black") +
   labs(title = "Árslaun í dollurum (USD)", x = "Árslaun (USD)", y = "Fjöldi svarenda") +
+  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  scale_x_continuous(labels = scales::comma, 
+                     breaks = seq(min(eh$CompTotalUSD),
+                                  max(eh$CompTotalUSD), 
+                                  by = 50000)) +
   theme_minimal()
 
 launsvarenda
@@ -192,7 +197,20 @@ launsvarenda
 
 ## l) 
 **Notið viðeigandi myndrit sem sýnir árslaun þátttakenda í USD eftir löndunum þremur. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
-er að testa
+```{r}
+launLanda <- ggplot(eh, aes(x = Country, y = CompTotalUSD, fill = Country)) +
+  geom_boxplot(outlier.color = "red", outlier.shape = 16) +
+  labs(title = "Árslaun þátttakenda í dollurum (USD) eftir hverju landi", 
+       y = "Árslaun (USD)", 
+       x = "Land") +
+  scale_y_continuous(labels = scales::comma, 
+                     breaks = seq(min(eh$CompTotalUSD),
+                                  max(eh$CompTotalUSD), 
+                                  50000)) +
+  theme_minimal()
+
+launLanda
+```
 
 ## m) 
 **Nú skuluð þið aftur notað viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().**
