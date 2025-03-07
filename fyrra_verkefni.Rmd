@@ -1,7 +1,7 @@
 ---
 author: |
-  Eygló Ástþórsdóttir <eya19@hi.is>  
-  Helga Björg Helgadóttir <hbh54@hi.is>
+  - Eygló Ástþórsdóttir <eya19@hi.is>  
+  - Helga Björg Helgadóttir <hbh54@hi.is>
 date: 19. feb 2025
 title: "Fyrra R verkefni"
 output: 
