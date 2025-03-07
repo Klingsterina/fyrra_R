@@ -31,6 +31,7 @@ library(tidyr)
 library(stringr)
 ```
 
+
 # HLUTI 1
 ## a) 
 **Lesið gagnasafnið inn í R/RStudio og geymið í hlut sem ber upphafsstafi þeirra sem verkefnið vinna (ef Gréta Halldórsdóttir og Sigurður Karl Jónsson eru að vinna saman skulu þau nefna hlutinn gs).**
@@ -59,7 +60,6 @@ Samkvæmt þessum upplýsingum hefur a.m.k. einn einstaklingur skráð að hann 
 ```{r}
 sum(eh$YearsCodingBeforeDev < 0, na.rm = TRUE)
 ```
-
 265 einstaklingar eru með skráð að þeir hafi starfað sem forritari amk einu ári lengur en þeir hafa forritað, sem stemmir ekki. Filterum út þá sem misskildu spurninguna:
 
 ```{r}
@@ -67,7 +67,6 @@ eh_fixedYears <- eh %>%
   filter(YearsCodingBeforeDev >= 0)
 summary(eh_fixedYears$YearsCodingBeforeDev)
 ```
-
 Þá fáum við mun raunsærri gildi.
 
 ## d) 
@@ -134,7 +133,6 @@ top_10_countries
 
 ```
 
-
 ## h) 
 **Veljið forritara frá þremur löndum til að vinna áfram með. Það þurfa að vera a.m.k. 300 svör frá þeim löndum sem þið vinnið með. Yfirskrifið gagnarammann í e) lið með svörum frá þessum þremur löndum. Þið eigið að nota þennan gagnaramma það sem eftir er verkefnisins.**
 ```{r}
@@ -191,6 +189,7 @@ eh$Country <- recode(eh$Country,
 kable(table(eh$Country), col.names = c("Land", "Fjöldi svarenda"))
 ```
 
+
 # HLUTI 2
 ## k) 
 **Notið viðeigandi myndrit sem sýnir árslaun svarenda í dollurum (USD). Lýsið í örfáum orðum því sem þið sjáið á myndinni. Hér gæti verið góð hugmynd að fjarlægja einhver svör. Rökstyðjið af hverju þið ákváðuð að gera það og teiknið sams konar mynd aftur (eftir að þið fjarlægið).**
@@ -217,8 +216,8 @@ launsvarenda <- ggplot(eh, aes(x = CompTotalUSD, fill = after_stat(x))) +
 
 launsvarenda
 ```
-### Hvað má lesa úr stuðlaritinu fyrir ofan?
 
+### Hvað má lesa úr stuðlaritinu fyrir ofan?
 Stuðlaritið sýnir mikla dreifingu á árslaunum forritara. Algengustu árslaunin eru á bilinu 75,000-87,500 bandaríkjadollarar. Líkindadreifingin er hægri skekkt einkryppudreifing með hægri hala og fylgir normaldreifingu.
 
 Við ákváðum að fjarlægja engin svör því okkur þykir ekki þörf á því. Við erum búnar að fjarlægja núlllaun og NA gildi úr gögnunum (að ofan) og töldum það duga.
@@ -266,18 +265,17 @@ annual_salaries_by_country_education
 ```
 
 ### Helstu atriði sem má lesa úr myndinni:
-Bandaríkin eru almennt með hæstu launin fyrir flest menntunarstig. Hinsvegar þeir svarendur sem svöruðu "Annað" eru með töluvert lægri laun miðað við hina sem kláruðu einhverskonar próf.
+Bandaríkin eru almennt með hæstu launin fyrir flest menntunarstig. Hins vegar eru þeir svarendur sem svöruðu "Annað" með töluvert lægri laun miðað við þá sem kláruðu próf af hvers kyns tagi.
 
-Frakkland og Þýskaland eru mjög svipuð en svarendur eru með töluvert lægri laun miðað við bandaríkin þar sem meðal laun hjá Frakklandi og Þýskalandi eru undir 100Þ USD.
+Frakkland og Þýskaland eru með mjög svipaðar niðurstöður og eru svarendur frá báðum þjóðernum með töluvert lægri laun í samanburði við Bandaríkin. Meðallaun Frakka og Þjóðverja eru undir 100 þúsund Bandaríkjadollurum óháð menntunarstigi.
 
-Kassaritið hækkar þegar menntunarstigið hækkar, sem gefur til kynna að meðallaun eða miðgildi séu meiri fyrir þá sem eru með bakkalár, meistaragráðu eða doktorspróf.
-Samt sem áður er breidd kassanna og fjöldi útlaga í hverjum menntunarflokki umtalsverður. Þetta sýnir að launin geta verið mjög breytileg innan sama menntunarstigs.
+Almennt hækkar staðsetning kassans í kassaritinu í takt við aukið menntunarstig, sem gefur til kynna um að meðallaun þeirra sem eru með bakkalár, meistaragráðu eða doktorspróf, séu hærri.
+Samt sem áður er breidd kassanna umtalsverð sem og fjöldi útlaga innan hvers menntunarstigs. Launin geta þvíverið mjög breytileg á meðal einstaklinga með sama stig menntunar.
 
 ## n) 
 **Veljið ykkur tvær talnabreytur sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 
 Við völdum breyturnar: YearsCodePro og CompTotalUSD. Völdum að nota punktarit til að birta niðurstöður.
-
 ```{r}
 codeing_years_pro_and_salary <- ggplot(
   # Breytan data er fengin með hjálp frá AI
@@ -299,7 +297,6 @@ codeing_years_pro_and_salary
 ```
 
 ### Hvað sjáum við út frá þessari mynd?
-
 **Hallatala:** Línan hallar upp á við, sem bendir til jákvæðs sambands á milli reynslu sem atvinnuforritari og árslauna. Það er þó mikil dreifing á gögnunum og mörg áhugaverð dæmi um gögn sem stangast á við almenna þróun launa. 
 
 **Mikill launamunur þrátt fyrir svipaðan starfsaldur:** Fólk með stuttan starfsaldur (0–10 ár) er á mjög fjölbreyttum árslaunum, frá nánast engum launum og hátt í 270 þúsund bandaríkjadollara. Sömuleiðis eru dæmi um einstaklinga sem hafa starfað lengi sem forritarar (20+ ár), en eru einungis með meðal- eða jafnvel lægri laun en einstaklingar sem hafa starfað í styttri tíma. Þetta sýnir okkur að laun geta ráðist af mörgum þáttum, og starfsaldur eykur ekki endilega alltaf verðmæti starfsmanns.
@@ -308,7 +305,6 @@ codeing_years_pro_and_salary
 **Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 
 Við völdum breyturnar: DevType og YearsCode. Við völdum að nota kassarit til að birta niðurstöðurnar.
-
 ```{r}
 # Reikna út 10 algengustu DevType gildi
 top_10_devtypes <- eh %>%
@@ -363,12 +359,12 @@ dev_type_and_years_coding
 ```
 
 ### Hvað sjáum við út frá þessari mynd?
-
 **Dreifing:** Allir starfstitlar hafa talsverða dreifingu á starfsaldri. Það segir okkur að það starfi bæði reynslumiklir og reynslulitlir forritarar innan margra ólíkra sviða.
 
 **Miðgildin:** Miðgildin eru í flestum flokkum í kringum 13-15 ár (t.d. mobile, back-end, full-stack, og embedded applications or devices). Engineering manager er með hæsta miðgildið, í kringum 20 ár, sem gefur til kynna um að meiri starfsreynslu sé krafist fyrir þann starfstitil.
 
 **Útlagar:** Út frá myndinni má sjá að flestir forritarar eru með 10-25 ára reynslu. Svörtu punktarnir fyrir ofan spannirnar gefa þó til kynna um að það séu útlagar sem hafa afgerandi meiri starfsreynslu, á bilinu 32-50 ár.
+
 
 # HLUTI 3
 ## p) 
@@ -383,7 +379,6 @@ kable(fjoldi_svarenda_tafla, caption = "<center>Fjöldi svarenda eftir löndum o
 
 ## q) 
 **Búið til töflu sem sýnir hlutfall svarenda á hverju menntunarstigi fyrir sig eftir löndum. Það á t.d. að vera hægt að lesa hversu hátt hlutfall svarenda er með BS gráðu í hverju landi fyrir sig osfrv.**
-
 ```{r}
 hlutfall_svarenda_tafla <- eh %>%
   group_by(Country, EdLevel) %>%
