@@ -107,9 +107,9 @@ summary(eh$CompTotal)
 ```
 
 ### Niðurstaða:
-Í fyrri samantektinni (áður en útlögin eru fjarlægð) sást max gildi 1.000e+150, sem er augljóslega óraunhæft.
-Eftir að útlögunum er eytt með IQR-aðferðinni (1.5 * IQR yfir Q3 og undir Q1) lækkar max í 280.000, sem er miklu nær raunhæfum launum.
-Þetta sýnir að gögnin innihéldu a.m.k. eitt rangt eða óeðlilega hátt gildi (1.000e+150) sem nú er fjarlægt, og gagnasafnið gefur því skýrari mynd af raunverulegri launadreifingu.
+Já, það eru augljósir útlagar í CompTotal breytunni. Í fyrri samantektinni (áður en útlagarnir voru fjarlægðir) var max gildið 1.000e+150, sem er óraunhæft.
+Eftir að útlögunum var eytt með IQR-aðferðinni (1.5 * IQR yfir Q3 og undir Q1) lækkaði max í 280.000, sem er mun nær raunhæfum launum.
+Nú gefa gögnin mun skýrari mynd af raunverulegri launadreifingu hjá forriturum.
 
 ## f) 
 **Búið til nýja breytu sem heitir CompTotalUSD þar sem öll laun eru í dollurum. Ábending: Hér gæti verið gott að nota ifelse() skipun.**
@@ -196,7 +196,7 @@ kable(table(eh$Country), col.names = c("Land", "Fjöldi svarenda"))
 **Notið viðeigandi myndrit sem sýnir árslaun svarenda í dollurum (USD). Lýsið í örfáum orðum því sem þið sjáið á myndinni. Hér gæti verið góð hugmynd að fjarlægja einhver svör. Rökstyðjið af hverju þið ákváðuð að gera það og teiknið sams konar mynd aftur (eftir að þið fjarlægið).**
 ```{r}
 launsvarenda <- ggplot(eh, aes(x = CompTotalUSD, fill = after_stat(x))) +
-  geom_histogram(bins = 30, color="black") +
+  geom_histogram(boundary = 1, binwidth = 12500, color="black") +
   scale_fill_gradient(low = "#a5eeac",
                       high = "#0d284a",
                       labels = scales::comma,
@@ -207,7 +207,9 @@ launsvarenda <- ggplot(eh, aes(x = CompTotalUSD, fill = after_stat(x))) +
        x = "Árslaun í dollurum",
        y = "Fjöldi svarenda",
        fill = "Árslaun") +
-  scale_y_continuous(breaks = seq(0, 500, by = 100)) +
+  scale_y_continuous(breaks = seq(min(eh$CompTotalUSD),
+                                  max(eh$CompTotalUSD), 
+                                  100)) +
   scale_x_continuous(labels = scales::comma, 
                      breaks = seq(0, 300000, by = 50000),
                      limits = c(0, 300000)) +
@@ -215,6 +217,11 @@ launsvarenda <- ggplot(eh, aes(x = CompTotalUSD, fill = after_stat(x))) +
 
 launsvarenda
 ```
+### Hvað má lesa úr stuðlaritinu fyrir ofan?
+
+Stuðlaritið sýnir mikla dreifingu á árslaunum forritara. Algengustu árslaunin eru á bilinu 75,000-87,500 bandaríkjadollarar. Líkindadreifingin er hægri skekkt einkryppudreifing með hægri hala og fylgir normaldreifingu.
+
+Við ákváðum að fjarlægja engin svör því okkur þykir ekki þörf á því. Við erum búnar að fjarlægja núlllaun og NA gildi úr gögnunum (að ofan) og töldum það duga.
 
 ## l) 
 **Notið viðeigandi myndrit sem sýnir árslaun þátttakenda í USD eftir löndunum þremur. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
@@ -228,18 +235,18 @@ launLanda <- ggplot(eh, aes(x = Country, y = CompTotalUSD, fill = Country)) +
   scale_y_continuous(labels = scales::comma, 
                      breaks = seq(min(eh$CompTotalUSD),
                                   max(eh$CompTotalUSD), 
-                                  50000)) +
+                                  30000)) +
   theme_minimal()
 
 launLanda
 ```
 
-### Helstu atriði sem má lesa úr myndinni:
-Bandaríkin eru með hæstu árslaunin að meðaltali; miðgildið er hærra en í hinum löndunum. Einnig er nokkuð breið dreifing og margir útlaga með mjög há laun.
+### Helstu atriði sem lesa má úr myndinni:
+Bandaríkin eru með hæstu árslaunin að meðaltali; miðgildið er hærra en í hinum löndunum. Einnig er frekar víð dreifing á launum.
 
-Þýskaland er í miðjunni, með hærri miðgildi en Frakkland, en lægri en Bandaríkin. Dreifingin er þó nokkuð mikil og nær upp í töluvert há laun hjá sumum svarendum.
+Þýskaland er í miðjunni, með hærra miðgildi en Frakkland, en lægra en Bandaríkin. Dreifingin er fremur lítil og margir útlagar sem fá töluvert hærri laun, eða töluvert lægri.
 
-Frakkland er með lægri laun miðað við hin löndin. Kassinn er neðar á ásnum, sem bendir til að langflestir svarendur séu með undir 100.000 USD á ári.
+Frakkland er að staðaldri með lægri laun miðað við hin tvö löndin. Kassinn er neðar á ásnum, sem bendir til þess að flestir svarendur séu með á bilinu 45-75 þúsund bandaríkjadollara í laun á ári. Líkt og í Þýskalandi eru margir útlagar sem fá svo töluvert hærri laun.
 
 ## m) 
 **Nú skuluð þið aftur nota viðeigandi myndrit til að sýna árslaun þátttakenda eftir löndunum þremur en nú einnig menntun. Lýsið í örfáum orðum því sem þið sjáið á myndinni. Ábending: notið facet_wrap().**
@@ -250,7 +257,10 @@ annual_salaries_by_country_education <- ggplot(eh, aes(x = EdLevel, y = CompTota
   theme_minimal() +
   facet_wrap(~ Country) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  scale_y_continuous(labels = comma)
+  scale_y_continuous(labels = comma,
+                     breaks = seq(min(eh$CompTotalUSD),
+                                  max(eh$CompTotalUSD), 
+                                  50000))
 
 annual_salaries_by_country_education
 ```
@@ -260,7 +270,7 @@ Bandaríkin eru almennt með hæstu launin fyrir flest menntunarstig. Hinsvegar 
 
 Frakkland og Þýskaland eru mjög svipuð en svarendur eru með töluvert lægri laun miðað við bandaríkin þar sem meðal laun hjá Frakklandi og Þýskalandi eru undir 100Þ USD.
 
-Boxritin hækkar þegar menntunarstigið hækkar, sem gefur til kynna að meðallaun eða miðgildi séu meiri fyrir þá sem eru með bakkalár, meistaragráðu eða doktorspróf.
+Kassaritið hækkar þegar menntunarstigið hækkar, sem gefur til kynna að meðallaun eða miðgildi séu meiri fyrir þá sem eru með bakkalár, meistaragráðu eða doktorspróf.
 Samt sem áður er breidd kassanna og fjöldi útlaga í hverjum menntunarflokki umtalsverður. Þetta sýnir að launin geta verið mjög breytileg innan sama menntunarstigs.
 
 ## n) 
@@ -297,7 +307,7 @@ codeing_years_pro_and_salary
 ## o) 
 **Veljið ykkur talnabreytu og flokkabreytu sem ykkur finnst spennandi að skoða saman og búið til viðeigandi myndrit sem sýnir þær. Lýsið í örfáum orðum því sem þið sjáið á myndinni.**
 
-Við völdum breyturnar: DevType og YearsCode. Við völdum að nota boxrit til að birta niðurstöðurnar.
+Við völdum breyturnar: DevType og YearsCode. Við völdum að nota kassarit til að birta niðurstöðurnar.
 
 ```{r}
 # Reikna út 10 algengustu DevType gildi
@@ -340,11 +350,14 @@ dev_type_and_years_coding <- ggplot(eh_dev_top10, aes(x = DevType, y = YearsCode
     axis.text.y = element_text(size = 12),
     axis.title = element_text(size = 12),
     plot.title = element_text(size = 16, hjust = 0.5, margin = margin(b = 10)),
-    plot.subtitle = element_text(size = 12, face = "italic"),
     panel.grid.major = element_line(size = 0.5, color = "gray"),
     panel.grid.minor = element_blank()
   ) +
-  scale_fill_brewer(palette = "Set3")
+  scale_fill_brewer(palette = "Set3") +
+  scale_y_continuous(labels = comma,
+                     breaks = seq(min(eh$CompTotalUSD),
+                                  max(eh$CompTotalUSD), 
+                                  5))
 
 dev_type_and_years_coding
 ```
